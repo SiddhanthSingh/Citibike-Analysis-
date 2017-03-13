@@ -1,0 +1,19 @@
+
+#scratchpad
+
+column_for_gender_trend_observation <- bikedat[,c(16)]
+library(plyr)
+gender_trend <- ddply(column_for_gender_trend_observation,(gender),nrow) 
+
+# Weights as edges 
+names(gender)[names(gender)=="V1"]="V1"  
+
+#At least 6 bikes in each station ,so it is reasonable to suppose average 3 rides/day is acceptable, so delete rides that have weights <=6*90=540
+larger540 <- filter(gender_trend,gender_trend[,3] > 540)  # 312 rows remain
+
+
+# Visualization..(Stations as nodes, Weights as edges)
+install.packages('igraph')
+library(igraph)
+g <- graph.data.frame(larger540, directed = TRUE)
+plot(g,layout=layout.fruchterman.reingold,vertex.size=0.1,edge.arrow.size=0.3,edge.width = E(g)$V1/750)
