@@ -1,0 +1,98 @@
+#Install the requisite packages
+install.packages("dplyr")
+library(plyr)
+library(dplyr)
+
+#Bind the relevant files and write to a new .csv file in order to ease flexibility
+datafile7 <- read.csv("C:\\Users\\Siddh\\Documents\\Citibike\\201607-citibike-tripdata.csv")
+datafile8 <- read.csv("C:\\Users\\Siddh\\Documents\\Citibike\\201608-citibike-tripdata.csv")
+datafile9 <- read.csv("C:\\Users\\Siddh\\Documents\\Citibike\\201609-citibike-tripdata.csv")
+datafile <- rbind(datafile7,datafile8,datafile9)
+write.csv(datafile,"C:\\Users\\Siddh\\Documents\\Citibike\\2016-last-Trip-Data.csv")
+
+#Read the new csv file and point it to an object
+bikedat <- read.csv("2016-last-Trip-Data.csv")
+
+#Dimensions and names present in the object
+dim(bikedat)
+names(bikedat)
+
+#count how many rides of same Start Station to End Station 
+#Only 186792 rows now!
+count_same_rides <- ddply(useful_cols,.(start.station.id,end.station.id),nrow)
+
+
+#Look at the instances that have the same start(Point of Origin) and end station(End Destination)
+same_station_start_end <- subset(bikedat, start.station.id==end.station.id)
+View(same_station_start_end)
+
+#Dimensions of this instance
+dim(same_station_start_end)
+
+#Percentage of the whole, having same origin and destination
+Percentage_Same_of_Total <- ((dim(same_station_start_end)/dim(bikedat))*100) 
+Percentage_Same_of_Total
+
+#Major station for Start
+#Pershing Square North
+tail(names(sort(table(bikedat$start.station.name))), 1)
+
+#Major station for End
+#Pershing Square North
+tail(names(sort(table(bikedat$end.station.name))), 1)
+
+#Major month for travel
+#September
+tail(names(sort(table(bikedat$starttime))), 1)
+
+#Extract Start Station ID & End Station ID from database
+useful_cols <- combine7_9[,c(4,8)]
+
+# Weights as edges 
+names(count_same_rides)[names(count_same_rides)=="V1"]="V1"  
+names(coun)
+
+#At least 6 bikes in each station ,so it is reasonable to suppose average 3 rides/day is acceptable, so delete rides that have weights <=6*90=540
+larger540 <- filter(count_same_rides,count_same_rides[,3] > 540)  # 312 rows remain
+
+# Visualization..(Stations as nodes, Weights as edges)
+install.packages('igraph')
+library(igraph)
+g <- graph.data.frame(larger540, directed = TRUE)
+plot(g,layout=layout.fruchterman.reingold,vertex.size=0.1,edge.arrow.size=0.3,edge.width = E(g)$V1/750)
+
+#Q7
+edge.betweenness(g)
+edge.connectivity(g)
+centralization.degree(g)
+
+
+
+
+
+#Disregard this as a roughcode work pad
+max.col(bikedat, ties.method = c("random"))
+bikedat$end.station.id
+
+majority_traffic_at_start = bikedat(station.name = as.vector(bikedat$start.station.id), stringsAsFactors = F)
+
+plot(bikedat, edge.width=(bikedat)$weight, vertex.size = start.station.id$bikedat)
+
+bikedat(mean("start.station.id"))
+sort.list(bikedat$start.station.name)
+
+plot.new(start.station.id)
+
+majority_traffic_at_start <- mean(bikedat$start.station.id)
+
+start_end_count = count(df, c("start.station.id","end.station.id"))
+
+ds <- data.frame( bikedat )
+as.data.frame.list(ds)[, bikedat[start.station.name == max(start.station.name)]]
+
+ds <- data.table( bikedat )
+setkey(ds, bikedat)
+sorted <- ds[,.N,by=list(bikedat)]
+
+most_repeated_value <- sorted[order(-N)]$x[1]
+most_repeated_value
